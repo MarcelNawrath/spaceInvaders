@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Space Invaders</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="myCanvas">
+        <div id="player1"></div>
+        <div id="player2"></div>
+        <div id="missiles"></div>
+        <div id="enemies">
+            <button onclick="start()">Singleplayer</button>
+            <button onclick="startMult()">Multiplayer</button>
+        </div>
+        <div id="footer">
+            <div id="score">Player1 Score: 0 - Player2 Score: 0</div>
+            <div id="life"><b>Player1 Life: <progress min="0" max="100" value="100"></progress></b>
+                <b>Player2 Life: <progress min="0" max="100" value="100"></progress></b>
+                </progress>
+            </div>
+        
+        </div>
+    </div>
+
+    <script>
+
+//Variables thaz we'll need
+var gameOver;
+var canvas;
+var player1;
+var multiplayer;
+var score;
+var score2;
+var missiles; 
+var missiles2;
+var enemymissiles;
+var enemies;
+var enemyDirection;
+var directionChange;
+var keys;
+var game;
+
+//declares all variables and start a game with thread();
+//starts the mainthread
+function start(){
+    if (!multiplayer){
+        document.getElementById("player2").style.visibility = "hidden";
+    }
+    if (multiplayer){
+        document.getElementById("player2").style.visibility = "visible";
+    }
+    gameOver = true;
+    canvas = {
+       top: 700,
+       left: 1200
+        }
+    player1 = {
+        top: 600,
+        left: 575,
+        life: 100
+    };
+    player2 = {
+        top: 600,
+        left: 300,
+        life: 100
+    };
+    missiles = [];
+    missiles2 = [];
+    enemymissiles = [];
+    //enemies Positions
+    enemies = [
+        {left: 200, top: 100, health: 30, points: 30, level: 3},
+        {left: 275, top: 100, health: 30, points: 30, level: 3},
+        {left: 350, top: 100, health: 30, points: 30, level: 3},
+        {left: 425, top: 100, health: 30, points: 30, level: 3},
+        {left: 500, top: 100, health: 30, points: 30, level: 3},
+        {left: 575, top: 100, health: 30, points: 30, level: 3},
+        {left: 650, top: 100, health: 30, points: 30, level: 3},
+        {left: 725, top: 100, health: 30, points: 30, level: 3},
+        {left: 800, top: 100, health: 30, points: 30, level: 3},
+        {left: 875, top: 100, health: 30, points: 30, level: 3},
+        {left: 950, top: 100, health: 30, points: 30, level: 3},
+        {left: 200, top: 150, health: 20, points: 20, level: 2},
+        {left: 275, top: 150, health: 20, points: 20, level: 2},
+        {left: 350, top: 150, health: 20, points: 20, level: 2},
+        {left: 425, top: 150, health: 20, points: 20, level: 2},
+        {left: 500, top: 150, health: 20, points: 20, level: 2},
+        {left: 575, top: 150, health: 20, points: 20, level: 2},
+        {left: 650, top: 150, health: 20, points: 20, level: 2},
+        {left: 725, top: 150, health: 20, points: 20, level: 2},
+        {left: 800, top: 150, health: 20, points: 20, level: 2},
+        {left: 875, top: 150, health: 20, points: 20, level: 2},
+        {left: 950, top: 150, health: 20, points: 20, level: 2},           
+        {left: 200, top: 200, health: 10, points: 10, level: 1},
+        {left: 275, top: 200, health: 10, points: 10, level: 1},
+        {left: 350, top: 200, health: 10, points: 10, level: 1},
+        {left: 425, top: 200, health: 10, points: 10, level: 1},
+        {left: 500, top: 200, health: 10, points: 10, level: 1},
+        {left: 575, top: 200, health: 10, points: 10, level: 1},
+        {left: 650, top: 200, health: 10, points: 10, level: 1},
+        {left: 725, top: 200, health: 10, points: 10, level: 1},
+        {left: 800, top: 200, health: 10, points: 10, level: 1},
+        {left: 875, top: 200, health: 10, points: 10, level: 1},
+        {left: 950, top: 200, health: 10, points: 10, level: 1},
+    ];
+
+    //bonusEnemy[ //FICK DIESE TASTATUR
+      //  {left: 0, top: 0}
+    //];
+
+    keys = [];
+    gameOver = false;
+    score = 0;
+    score2 = 0;
+    enemyDirection = true;
+    directionChange = false;
+    game = setInterval(thread, 50);
+    }
+
+//checks document.onkeydown
+//if gameOver == false -> printKeys();
+document.onkeydown = function (e) {
+    keys[e.keyCode] = true;
+};
+
+//checks document.onkeyup
+//if gameOver == false -> printKeys();
+document.onkeyup = function (e) {
+    delete keys[e.keyCode];
+};
+
+//checks all keys to see which ones are pressed
+function printKeys() {
+    for (var i in keys) {
+        
+        if (i == 39){
+            if (player1.left <= 1050)
+        player1.left = player1.left + 10;
+        drawMissiles();
+        moveplayer1();
+        };
+        if (i == 37){
+            if (player1.left >= 100)
+        player1.left = player1.left - 10;
+        drawMissiles();
+        moveplayer1();
+        };
+        if (i == 32){
+        if (missiles.length < 11){
+        missiles.push({
+            left: player1.left + 20,
+            top: player1.top
+            });
+            }
+        drawMissiles();
+        moveplayer1();
+        };
+        if (multiplayer){
+            if (i == 65){
+            if (player2.left >= 100)
+            player2.left -= 10;}
+            if(i == 68){
+            if (player2.left <= 1050)
+            player2.left += 10;}
+            if (i == 81){
+                if (missiles2.length < 11){
+                missiles2.push({
+                left: player2.left + 20,
+                top: player2.top
+            });
+            }
+        drawMissiles();
+        moveplayer2();
+        };
+
+            drawMissiles();
+            moveplayer2();
+        }
+    }
+}
+
+//starts multiplayer game
+function startMult(){
+    multiplayer = true;
+    document.getElementById("player2").style.display = "block";
+    start();
+}
+
+//draws all Missiles through creating new missiles divs
+function drawMissiles() {
+    document.getElementById("missiles").innerHTML = "";
+    for (let m = 0; m < missiles.length; m++){
+        document.getElementById("missiles").innerHTML +=
+        `<div class='missile' style='left: ${missiles[m].left}px; 
+        top: ${missiles[m].top}px;'></div>`;
+    }
+    for (let m = 0; m < missiles2.length; m++){
+        document.getElementById("missiles").innerHTML +=
+        `<div class='missile' style='left: ${missiles2[m].left}px; 
+        top: ${missiles2[m].top}px;'></div>`;
+    }
+    for (let em = 0; em < enemymissiles.length; em++){
+        document.getElementById("missiles").innerHTML +=
+        `<div class='missile${enemymissiles[em].level}' style='left: ${enemymissiles[em].left}px; 
+        top: ${enemymissiles[em].top}px;'></div>`;
+    }
+}
+
+//draw Enemies, same as missiles and let them shoot randomly a missile
+function drawEnemies() {
+        if (enemies.length == 0){
+            gameOver = true;
+        }
+        document.getElementById("enemies").innerHTML = "";
+        for (let e = 0; e < enemies.length; e++){
+            document.getElementById("enemies").innerHTML +=
+            `<div class='enemy${enemies[e].level}' style='left: ${enemies[e].left}px; 
+            top: ${enemies[e].top}px;'></div>`;
+
+            let i = Math.floor(Math.random() * 500);
+        
+            if(i == 5){
+                enemymissiles.push({
+                left: enemies[e].left + 20,
+                top: enemies[e].top + 50,
+                level: enemies[e].level
+                });
+            }
+        }
+    }
+
+//move the player1 through style-manipulation
+function moveplayer1() {
+    document.getElementById("player1").style.left = player1.left + "px";
+}
+
+//move the player1 through style-manipulation
+function moveplayer2() {
+    document.getElementById("player2").style.left = player2.left + "px";
+}
+    
+//moves all missiles through style-manipulation
+function moveMissiles(){
+    for (let m = 0; m < missiles.length; m++){
+    missiles[m].top -= 10;
+    if (missiles[m].top < 0) missiles.splice(m, 1);
+    }
+    for (let m = 0; m < missiles2.length; m++){
+    missiles2[m].top -= 10;
+    if (missiles2[m].top < 0) missiles2.splice(m, 1);
+    }
+    for (let em = 0; em < enemymissiles.length; em++){
+    enemymissiles[em].top += 5 * enemymissiles[em].level;
+    if (enemymissiles[em].top > player1.top +50) enemymissiles.splice(em, 1);
+    }
+}
+
+//moves the Enemies through style-manipulation
+//if enemy "hits" the player1 (enemies[e].top +
+//50 (enemies height) == player1.top) set gameOver on true
+function moveEnemies(){
+    for (let e = 0; e < enemies.length; e++){
+        if (enemies[e].left < 100){ enemyDirection = false;
+            directionChange = true;
+        }
+        if (enemies[e].left > 1050){ enemyDirection = true;
+            directionChange = true;
+        }
+    }
+    for (let e = 0; e < enemies.length; e++){
+        if (enemyDirection)
+            enemies[e].left -= 10;
+        if (!enemyDirection)
+            enemies[e].left += 10;
+        if (directionChange){
+            enemies[e].top += 10;
+            if (enemies[e].top + 50> player1.top){
+            gameOver = true;
+        }}
+    }
+    directionChange = false;
+}
+
+//checks if an enemy was shot
+//if yes it'll splice this enemy and missile out of their Arrays
+function shootEnemy(){
+    for (let e = 0; e < enemies.length; e++){
+        for (let m = 0; m < missiles.length; m++){
+            if (
+            (missiles[m].top <= enemies[e].top + 50) &&
+            (missiles[m].top >= enemies[e].top) &&
+            (missiles[m].left <= enemies[e].left + 50) &&
+            (missiles[m].left >= enemies[e].left)
+            )
+                {
+                enemies[e].health -= 10;
+                missiles.splice(m, 1);
+                if (enemies[e].health <= 0) {
+                    score += enemies[e].points;
+                    enemies.splice(e, 1);
+                }}
+        }
+        for (let m = 0; m < missiles2.length; m++){
+            if (
+            (missiles2[m].top <= enemies[e].top + 50) &&
+            (missiles2[m].top >= enemies[e].top) &&
+            (missiles2[m].left <= enemies[e].left + 50) &&
+            (missiles2[m].left >= enemies[e].left)
+            )
+                {
+                enemies[e].health -= 10;
+                missiles.splice(m, 1);
+                if (enemies[e].health <= 0) {
+                    score2 += enemies[e].points;
+                    enemies.splice(e, 1);
+                }}
+        }
+    }
+}
+
+//checks if player1 was shot
+//if yes set gameOver = true
+function shootplayer1(){
+    for (let em = 0; em < enemymissiles.length; em++){
+        if (
+        (enemymissiles[em].top <= player1.top + 30) &&
+        (enemymissiles[em].top >= player1.top - 10) &&
+        (enemymissiles[em].left <= player1.left + 40) &&
+        (enemymissiles[em].left >= player1.left)
+        )
+            {
+            player1.life -= 10 * enemymissiles[em].level;
+            enemymissiles.splice(em, 1);
+            }
+        if (player1.life <= 0) gameOver = true;    
+    }
+}
+
+//checks if player1 was shot
+//if yes set gameOver = true
+function shootplayer2(){
+    for (let em = 0; em < enemymissiles.length; em++){
+        if (
+        (enemymissiles[em].top <= player2.top + 30) &&
+        (enemymissiles[em].top >= player2.top - 10) &&
+        (enemymissiles[em].left <= player2.left + 40) &&
+        (enemymissiles[em].left >= player2.left)
+        )
+            {
+            player2.life -= 10 * enemymissiles[em].level;
+            enemymissiles.splice(em, 1);
+            }
+        if (player2.life <= 0) gameOver = true;    
+    }
+}
+
+//displays the score
+function showScore(){
+    if (multiplayer){
+    document.getElementById("score").innerHTML = "Player1 Score: " + score
+    + " - Player2 Score: " + score2;
+    }
+    else {
+    document.getElementById("score").innerHTML = "Player1 Score: " + score;
+    }
+}
+
+//displays the life
+function showLife(){
+
+    document.getElementById("life").getElementsByTagName("progress")[0].value =
+    player1.life;
+    document.getElementById("life").getElementsByTagName("progress")[1].value =
+    player2.life;
+    
+    //das funktioniert
+    //document.getElementById("life").getElementsByTagName("progress")[1].style.visibility =
+    //"hidden";
+
+    if (!multiplayer){
+    document.getElementById("life").getElementsByTagName("b")[1].style.visibility =
+    "hidden";}
+    if (multiplayer){
+    document.getElementById("life").getElementsByTagName("b")[1].style.visibility =
+    "visible";
+    }
+
+    /*document.getElementById("life").innerHtml = `Player1 Life: <progress min='0' max='100' value='${player1.life}'></progress>`;
+    if (multiplayer){
+    document.getElementById("life").innerHtml += `Player2 Life: <progress min='0' max='100' value='${player2.life}'></progress>`;
+}*/
+}
+
+//thread in Interval every second draw and move all things
+function thread(){
+    printKeys();
+    moveplayer1();
+    moveplayer2();
+    moveMissiles();
+    drawEnemies();
+    drawMissiles();
+    moveEnemies();
+    shootEnemy();
+    shootplayer1();
+    if (multiplayer){
+    shootplayer2();}
+    showScore();
+    showLife();
+    if (gameOver == true){
+        gameOvver();
+    }
+}
+
+//alert Game Over, stops the interval and make new Start button
+function gameOvver(){
+    if (multiplayer) alert("Player1: " + score + " - " + "Player2: " + score2);
+    else{alert("Your Score: " + score);}
+    multiplayer = false;
+    clearInterval(game);
+    document.getElementById("enemies").innerHTML +=
+    `<button onclick='start()'>Singleplayer</button>
+    <button onclick='startMult()'>Multiplayer</button>`;
+}    
+    </script>
+</body>
+
+</html>
