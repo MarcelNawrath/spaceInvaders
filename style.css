@@ -1,5 +1,5 @@
 #myCanvas {
-    background-image: url('assets/background.png');
+    background-image: url('assets/background2.jpg');
     height: 700px;
     width: 1200px;
     position: relative;
@@ -18,7 +18,7 @@
     left: 300px;
     display: none;
 }
-.enemy1, .enemy2, .enemy3 {
+.enemy1, .enemy2, .enemy3, #bonusEnemy {
     background-image: url('assets/enemy4.png');
     height: 40px;
     width: 50px;
@@ -30,16 +30,29 @@
 .enemy3 {
     background-image: url('assets/enemy3.png');
 }
+#bonus {
+    height: 700px;
+    width: 1200px;
+    position: absolute;
+    display: none;
+}
+#bonusEnemy {
+    background-image: url('assets/enemy.png');
+    height: 50px;
+}
 #missiles {
     height: 700px;
     width: 1200px;
     position: absolute;
 }
-.missile, .missile1, .missile2, .missile3 {
+.missile, .missileP2, .missile1, .missile2, .missile3 {
     background-image: url('assets/missile1.png');
     height: 16px;
     width: 10px;
     position: absolute;
+}
+.missileP2 {
+    background-image: url('assets/missile7.png')
 }
 .missile1{
     background-image: url('assets/missile5.png');
