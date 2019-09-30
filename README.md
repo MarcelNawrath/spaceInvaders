@@ -3,8 +3,11 @@ Space Invaders
 author: Marcel Nawrath
 
 index.html: website which contains the game
+
 gamefield.js: create the gamefield when page is loaded
+
 util.js: all functions needed for this game
+
 style.css: all classes and ids for the style of the game
 ./assets: contains all pictures needed for this game
 
