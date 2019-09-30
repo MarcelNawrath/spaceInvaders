@@ -12,6 +12,7 @@ style.css: all classes and ids for the style of the game
 
 ./assets: contains all pictures needed for this game
 
+
 After you opened index.html you can choose SinglePlayer or Multiplayer
 
 Singleplayer:
