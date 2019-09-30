@@ -54,7 +54,7 @@ Player2 (red spaceship):
 
 "Q": shoot a missile (you can't shoot a second missile until the first one dissappeared)
 
-If the lives of both player is less than or equal 0 the game is over
+If the lives of both player are less than or equal 0 the game is over
 
 If one enemy or more are at the same height as one spaceship the game is over
 
