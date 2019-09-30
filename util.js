@@ -461,6 +461,7 @@ function gameIsOver(){
     <button onclick='startMult()'>Multiplayer</button>`;
 }
 
+//export functions for testing
 module.exports = {  start,
                     controlPlayer,
                     startMult,

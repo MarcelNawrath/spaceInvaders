@@ -2,7 +2,6 @@
     "author": "Marcel Nawrath",
     "version": "1.0.0",
     "scripts": {
-        "test": "jest",
-        "testwatch": "jest --watchAll"
+        "test": "jest"
     } 
 }
