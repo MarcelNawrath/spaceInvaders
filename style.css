@@ -85,3 +85,21 @@
     text-align: right;
     padding-right: 30px
 }
+button {
+    color: greenyellow;
+    background-color: black;
+    height: 100px;
+    width: 100px;
+    border: 2px solid greenyellow;
+    border-radius: 20%;
+    margin-top: 250px;
+    margin-left: 300px
+}
+button:hover {
+    color: black;
+    background-color: greenyellow;
+    border: 2px solid green;
+}
+progress {
+    color: white;
+}
