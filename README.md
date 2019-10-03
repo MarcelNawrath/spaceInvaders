@@ -1,6 +1,6 @@
 Space Invaders
 
-author: Marcel Nawrath
+
 
 index.html: website which contains the game
 
